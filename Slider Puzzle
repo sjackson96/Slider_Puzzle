@@ -1,0 +1,111 @@
+#This is a search tree... kind of useless for now. Should be implemented with
+#searchTree(visited,start,start[1][0],1,0,0)
+def searchTree(visited,graph,node,x,y,z):
+    done = True
+    if node not in visited:
+        done = False
+        print(node)
+        visited.add(node)
+        while done == False:
+            if z == 0:
+                x -= 1
+                z += 1
+                searchTree(visited, graph, graph[x][y], x, y, z)
+            if z == 2:
+                y += 1
+                z += 1
+                searchTree(visited, graph, graph[x][y], x, y, z)
+            if z == 3:
+                x = 2
+                y = 0
+                z = 1
+                searchTree(visited, graph, graph[x][y], x, y, z)
+            else:
+                if len(start[0])-1 != y:
+                    y += 1
+                    searchTree(visited, graph, graph[x][y], x, y, z)
+                else:
+                    x = 1
+                    y = 1
+                    z += 1
+                    searchTree(visited, graph, graph[x][y], x, y, z)
+
+#This allows for percision on how to move the 0
+def up(x):
+    return x-1
+def down(x):
+    return x+1
+def left(y):
+    return y-1
+def right(y):
+    return y+1
+    
+
+# x = rows, y = column
+start = [
+    [1, 4, 3],
+    [7, 8, 0],
+    [6, 2, 5]
+]
+
+end = [
+    [1, 2, 3],
+    [8, 0, 4],
+    [7, 6, 5]
+]
+
+direction = ""
+stop = ""
+moves = 0
+col = 0
+
+#Set to keep track of visited nodes
+visited = set() 
+
+for i in range(0,len(start[0])):
+    print (start[i])
+    
+print()
+while (stop != 's'):
+    for i in range(0,len(start[0])):
+        if 0 in start[i]:
+            col = start[i].index(0)
+            direction = input("u for up, d for down, r for right, l for left: ").lower()
+            if direction == 'u':
+                if i != 0:
+                    u = up(i)
+                    start[i][col], start[u][col] = start[u][col], start[i][col]
+                    for i in range(0,len(start[0])):
+                        print (start[i])
+                else:
+                    print("Can't move that way")
+            elif direction == 'd':
+                if i != 2:
+                    d = down(i)
+                    start[i][col], start[d][col] = start[d][col], start[i][col]
+                    for i in range(0,len(start[0])):
+                        print (start[i])
+                else:
+                    print("Can't move that way")
+            elif direction == 'l':
+                if col != 0:
+                    l = left(col)
+                    start[i][l], start[i][col] = start[i][col], start[i][l]
+                    for i in range(0,len(start[0])):
+                        print (start[i])
+                else:
+                    print("Can't move that way")
+            elif direction == 'r':
+                if col != 2:
+                    r = right(col)
+                    start[i][r], start[i][col] = start[i][col], start[i][r]
+                    for i in range(0,len(start[0])):
+                        print (start[i])
+                else:
+                    print("Can't move that way")
+    moves += 1
+    print()
+    stop = input('Put in "s" to stop character: ').lower()
+    print()
+
+print("You did", moves,"moves.")
